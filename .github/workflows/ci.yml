@@ -48,27 +48,9 @@ jobs:
         run: |
           $ErrorActionPreference = "Stop"
           $root = "$PWD"
-          $out = Join-Path $root "build/Release"
-          $x86 = Join-Path $out "x86"
-          $x64 = Join-Path $out "x64"
-
-          New-Item -Force -ItemType Directory $x86, $x64 | Out-Null
-
-          Copy-Item -Recurse -Force "$root/bin/Release/x86/*" $x86
-          Copy-Item -Recurse -Force "$root/bin/Release/x64/*" $x64
-
-          New-Item -Force -ItemType Directory (Join-Path $x86 "Plugins"), (Join-Path $x64 "Plugins") | Out-Null
-
-          Copy-Item -Recurse -Force "$root/Dependencies/x86/*" $x86
-          Copy-Item -Recurse -Force "$root/Dependencies/x64/*" $x64
-
-          $launcher = Join-Path $out "Launcher"
-          New-Item -Force -ItemType Directory $launcher | Out-Null
-          Copy-Item -Recurse -Force "$root/bin/Release/*" $launcher
-
           $zipPath = Join-Path $root "ReClass.NET-$env:GITHUB_REF_NAME.zip"
           if (Test-Path $zipPath) { Remove-Item $zipPath -Force }
-          Compress-Archive -Path $out\* -DestinationPath $zipPath
+          Compress-Archive -Path "$root/bin/Release/*" -DestinationPath $zipPath
 
       - name: Upload release artifact
         if: startsWith(github.ref, 'refs/tags/')
