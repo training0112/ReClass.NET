@@ -37,7 +37,6 @@ This is a port of ReClass to the .NET platform with lots of additional features.
 - Class address calculator
 - Code Generator (C++ / C#)
 - Module / Section Dumper
-- Linux Support (tested on Ubuntu 18.04)
 - Debugger with "Find out what writes/accesses this address" support
 - Plugin Support
   - Plugins can be written in different languages (example: C++, C++/CLI, C#)
@@ -77,7 +76,7 @@ Just download the [latest version](https://github.com/ReClassNET/ReClass.NET/rel
 If you want to compile ReClass.NET just fork the repository and open the ReClass.NET.sln file with Visual Studio 2022 (or later) and the .NET 9 SDK installed.
 Compile the project and copy the dependencies to the output folder.
 
-To compile the linux native core library, you need WSL [installed and configured](https://learn.microsoft.com/en-us/cpp/build/walkthrough-build-debug-wsl2). If you do not need linux support, simply unload the project in the Solution Explorer. If you want to build cross-platform (x86/x64) you have to install `g++-multilib` too.
+Linux support has been removed; the project targets Windows only.
 
 If you use the `Makefile` with `docker` or `podman` you have to build the needed image `gcc_multilib` from the following `Dockerfile` (`docker build -t gcc_multi .`):
 

@@ -33,11 +33,7 @@ namespace ReClassNET.Forms
 
 			processDataGridView.AutoGenerateColumns = false;
 
-			// TODO: Workaround, Mono can't display a DataGridViewImageColumn.
-			if (NativeMethods.IsUnix())
-			{
-				iconColumn.Visible = false;
-			}
+			// Windows-only build keeps icon column visible.
 
 			previousProcessLinkLabel.Text = string.IsNullOrEmpty(previousProcess) ? NoPreviousProcess : previousProcess;
 

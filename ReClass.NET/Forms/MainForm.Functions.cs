@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Diagnostics.Contracts;
 using System.IO;
 using System.Linq;
+using System.Runtime.Versioning;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -19,6 +20,7 @@ using ReClassNET.UI;
 
 namespace ReClassNET.Forms
 {
+	[SupportedOSPlatform("windows")]
 	public partial class MainForm
 	{
 		public void ShowPartialCodeGeneratorForm(IReadOnlyList<ClassNode> partialClasses)

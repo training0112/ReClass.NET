@@ -67,13 +67,6 @@ namespace ReClassNET.Symbols
 
 		public SymbolStore()
 		{
-			if (NativeMethods.IsUnix())
-			{
-				// TODO: Are there symbol files like on windows?
-
-				return;
-			}
-
 			ResolveSearchPath();
 
 			var blacklistPath = Path.Combine(SymbolCachePath, BlackListFile);
@@ -114,11 +107,6 @@ namespace ReClassNET.Symbols
 			Contract.Requires(module != null);
 			Contract.Requires(module.Name != null);
 
-			if (NativeMethods.IsUnix())
-			{
-				return;
-			}
-
 			var name = module.Name.ToLower();
 
 			bool isBlacklisted;
@@ -153,11 +141,6 @@ namespace ReClassNET.Symbols
 			Contract.Requires(module != null);
 			Contract.Requires(module.Name != null);
 
-			if (NativeMethods.IsUnix())
-			{
-				return;
-			}
-
 			var moduleName = module.Name.ToLower();
 
 			bool createNew;
@@ -180,11 +163,6 @@ namespace ReClassNET.Symbols
 		public void LoadSymbolsFromPDB(string path)
 		{
 			Contract.Requires(path != null);
-
-			if (NativeMethods.IsUnix())
-			{
-				return;
-			}
 
 			var moduleName = Path.GetFileName(path)?.ToLower();
 			if (string.IsNullOrEmpty(moduleName))
@@ -213,11 +191,6 @@ namespace ReClassNET.Symbols
 		{
 			Contract.Requires(module != null);
 			Contract.Requires(module.Name != null);
-
-			if (NativeMethods.IsUnix())
-			{
-				return null;
-			}
 
 			var name = module.Name.ToLower();
 
