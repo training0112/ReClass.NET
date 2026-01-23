@@ -74,7 +74,7 @@ Just download the [latest version](https://github.com/ReClassNET/ReClass.NET/rel
   Valid operations are read ([..]), add (+), sub (-), mul (*) and div (/). Please note that all operations are integer calculations.
 
 ## Compiling
-If you want to compile ReClass.NET just fork the repository and open the ReClass.NET.sln file with Visual Studio 2019.
+If you want to compile ReClass.NET just fork the repository and open the ReClass.NET.sln file with Visual Studio 2022 (or later) and the .NET 9 SDK installed.
 Compile the project and copy the dependencies to the output folder.
 
 To compile the linux native core library, you need WSL [installed and configured](https://learn.microsoft.com/en-us/cpp/build/walkthrough-build-debug-wsl2). If you do not need linux support, simply unload the project in the Solution Explorer. If you want to build cross-platform (x86/x64) you have to install `g++-multilib` too.

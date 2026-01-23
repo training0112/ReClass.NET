@@ -17,8 +17,12 @@ namespace ReClassNET.Controls
 
 		private Image image;
 
+		[DefaultValue(null)]
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
 		public Image Icon { get => icon; set { icon = value; UpdateBanner(); } }
 
+		[DefaultValue("")]
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
 		public string Title { get => title; set { title = value ?? string.Empty; UpdateBanner(); } }
 
 		public override string Text { get => text; set { text = value ?? string.Empty; UpdateBanner(); } }

@@ -14,9 +14,15 @@ namespace ReClassNET.Controls
 	[DefaultEvent("Click")]
 	public class IconButton : Panel
 	{
+		[Browsable(false)]
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public bool Pressed { get; set; }
+		[Browsable(false)]
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public bool Selected { get; set; }
 
+		[DefaultValue(null)]
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
 		public Image Image { get; set; }
 		public Rectangle ImageRectangle { get; } = new Rectangle(3, 3, 16, 16);
 

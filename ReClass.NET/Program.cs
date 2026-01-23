@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Globalization;
 using System.Windows.Forms;
+using System.Text;
 using Microsoft.SqlServer.MessageBox;
 using ReClassNET.Core;
 using ReClassNET.Forms;
@@ -40,6 +41,8 @@ namespace ReClassNET
 			DesignMode = false; // The designer doesn't call Main()
 
 			CommandLineArgs = new CommandLineArgs(args);
+
+			Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
 
 			try
 			{

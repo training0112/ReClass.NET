@@ -21,8 +21,12 @@ namespace ReClassNET.Util
 
 			if (string.IsNullOrEmpty(path))
 			{
-				path = Assembly.GetExecutingAssembly().GetName().CodeBase;
-				path = FileUrlToPath(path);
+				path = Environment.ProcessPath;
+			}
+
+			if (string.IsNullOrEmpty(path))
+			{
+				path = Assembly.GetEntryAssembly()?.Location;
 			}
 
 			return path;

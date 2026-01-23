@@ -15,30 +15,35 @@ namespace ReClassNET.Controls
 
 	public partial class MemoryRecordList : UserControl
 	{
+		[DefaultValue(true)]
 		public bool ShowDescriptionColumn
 		{
 			get => descriptionColumn.Visible;
 			set => descriptionColumn.Visible = value;
 		}
 
+		[DefaultValue(true)]
 		public bool ShowAddressColumn
 		{
 			get => addressColumn.Visible;
 			set => addressColumn.Visible = value;
 		}
 
+		[DefaultValue(true)]
 		public bool ShowValueTypeColumn
 		{
 			get => valueTypeColumn.Visible;
 			set => valueTypeColumn.Visible = value;
 		}
 
+		[DefaultValue(true)]
 		public bool ShowValueColumn
 		{
 			get => valueColumn.Visible;
 			set => valueColumn.Visible = value;
 		}
 
+		[DefaultValue(true)]
 		public bool ShowPreviousValueColumn
 		{
 			get => previousValueColumn.Visible;

@@ -10,6 +10,8 @@ namespace ReClassNET.Controls
 	[Designer(typeof(HotkeyBoxDesigner))]
 	public partial class HotkeyBox : UserControl
 	{
+		[Browsable(false)]
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public KeyboardInput Input { get; set; }
 
 		public KeyboardHotkey Hotkey { get; } = new KeyboardHotkey();
