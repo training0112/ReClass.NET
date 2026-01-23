@@ -13,6 +13,7 @@ using ReClassNET.Controls;
 using ReClassNET.Core;
 using ReClassNET.DataExchange.ReClass;
 using ReClassNET.Extensions;
+using ReClassNET.Logger;
 using ReClassNET.Memory;
 using ReClassNET.MemoryScanner;
 using ReClassNET.MemoryScanner.Comparer;
@@ -373,6 +374,7 @@ namespace ReClassNET.Forms
 				try
 				{
 					Program.RemoteProcess.Symbols.LoadSymbolsFromPDB(ofd.FileName);
+					Program.Logger.Log(LogLevel.Information, $"Loaded PDB symbols from '{ofd.FileName}'.");
 				}
 				catch (Exception ex)
 				{

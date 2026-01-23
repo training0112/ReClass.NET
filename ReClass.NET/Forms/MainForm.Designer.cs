@@ -1253,6 +1253,7 @@ namespace ReClassNET.Forms
 			this.loadSymbolToolStripMenuItem.Name = "loadSymbolToolStripMenuItem";
 			this.loadSymbolToolStripMenuItem.Size = new System.Drawing.Size(194, 22);
 			this.loadSymbolToolStripMenuItem.Text = "Load Symbol...";
+			this.loadSymbolToolStripMenuItem.ToolTipText = "Load symbols from a PDB file (cached for this session).";
 			this.loadSymbolToolStripMenuItem.Click += new System.EventHandler(this.loadSymbolToolStripMenuItem_Click);
 			// 
 			// loadSymbolsToolStripMenuItem
@@ -1544,4 +1545,3 @@ namespace ReClassNET.Forms
 		private System.Windows.Forms.ToolStripMenuItem isLittleEndianToolStripMenuItem;
 	}
 }
-
