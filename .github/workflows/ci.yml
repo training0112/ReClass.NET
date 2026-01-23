@@ -48,9 +48,15 @@ jobs:
         run: |
           $ErrorActionPreference = "Stop"
           $root = "$PWD"
+          $releaseRoot = Join-Path $root "bin/Release"
+
+          Get-ChildItem -Path $releaseRoot -Recurse -Include *.pdb, *.lib, *.exp | Remove-Item -Force
+          Remove-Item -Force "$releaseRoot/x86/ReClass.NET_Launcher.*" -ErrorAction SilentlyContinue
+          Remove-Item -Force "$releaseRoot/x64/ReClass.NET_Launcher.*" -ErrorAction SilentlyContinue
+
           $zipPath = Join-Path $root "ReClass.NET-$env:GITHUB_REF_NAME.zip"
           if (Test-Path $zipPath) { Remove-Item $zipPath -Force }
-          Compress-Archive -Path "$root/bin/Release/*" -DestinationPath $zipPath
+          Compress-Archive -Path "$releaseRoot/*" -DestinationPath $zipPath
 
       - name: Upload release artifact
         if: startsWith(github.ref, 'refs/tags/')
