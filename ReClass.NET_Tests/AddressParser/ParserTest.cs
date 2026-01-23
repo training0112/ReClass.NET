@@ -45,6 +45,8 @@ namespace ReClass.NET_Tests.AddressParser
 
 		[Theory]
 		[InlineData("1", typeof(ConstantExpression))]
+		[InlineData("0x1", typeof(ConstantExpression))]
+		[InlineData("0X1", typeof(ConstantExpression))]
 		[InlineData("1 + 2", typeof(AddExpression))]
 		[InlineData("1 - 2", typeof(SubtractExpression))]
 		[InlineData("1 * 2", typeof(MultiplyExpression))]

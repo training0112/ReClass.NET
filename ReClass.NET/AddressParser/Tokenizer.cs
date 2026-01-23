@@ -118,41 +118,46 @@ namespace ReClassNET.AddressParser
 			bool IsHexadecimalDigit(char c) => char.IsDigit(c) || 'a' <= c && c <= 'f' || 'A' <= c && c <= 'F';
 			bool IsHexadecimalIdentifier(char c) => c == 'x' || c == 'X';
 
-			if (IsHexadecimalDigit(currentCharacter))
+			if (!IsHexadecimalDigit(currentCharacter))
 			{
-				var sb = new StringBuilder();
-				var hasHexadecimalIdentifier = false;
-
-				while (IsHexadecimalDigit(currentCharacter)
-					|| IsHexadecimalIdentifier(currentCharacter) && !hasHexadecimalIdentifier && sb.Length == 1 && sb[0] == '0')
-				{
-					sb.Append(currentCharacter);
-
-					if (!hasHexadecimalIdentifier)
-					{
-						hasHexadecimalIdentifier = IsHexadecimalIdentifier(currentCharacter);
-					}
-
-					ReadNextCharacter();
-				}
-
-				if (hasHexadecimalIdentifier)
-				{
-					sb.Remove(0, 2);
-				}
-
-				if (!long.TryParse(sb.ToString(), NumberStyles.HexNumber, CultureInfo.InvariantCulture, out var number))
-				{
-					throw new ParseException($"Could not parse '{sb}' as number.");
-				}
-				Number = number;
-
-				Token = Token.Number;
-
-				return true;
+				return false;
 			}
 
-			return false;
+			var sb = new StringBuilder();
+
+			if (currentCharacter == '0')
+			{
+				sb.Append(currentCharacter);
+				ReadNextCharacter();
+
+				if (IsHexadecimalIdentifier(currentCharacter))
+				{
+					// Consume "0x" or "0X" prefix.
+					sb.Clear();
+					ReadNextCharacter();
+				}
+			}
+
+			while (IsHexadecimalDigit(currentCharacter))
+			{
+				sb.Append(currentCharacter);
+				ReadNextCharacter();
+			}
+
+			if (sb.Length == 0)
+			{
+				throw new ParseException("Could not parse empty hexadecimal number.");
+			}
+
+			if (!long.TryParse(sb.ToString(), NumberStyles.HexNumber, CultureInfo.InvariantCulture, out var number))
+			{
+				throw new ParseException($"Could not parse '{sb}' as number.");
+			}
+
+			Number = number;
+			Token = Token.Number;
+
+			return true;
 		}
 
 		private bool TryReadIdentifierToken()
