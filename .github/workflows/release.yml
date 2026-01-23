@@ -1,78 +1,53 @@
-name: build-and-release
+name: release
 
 on:
-  push:
-    tags:
-      - "v*"
+  workflow_run:
+    workflows:
+      - build
+    types:
+      - completed
 
 permissions:
   contents: write
+  actions: read
 
 jobs:
-  build:
-    runs-on: windows-latest
+  release:
+    runs-on: ubuntu-latest
+    if: github.event.workflow_run.conclusion == 'success'
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: "9.0.x"
+          fetch-depth: 0
 
-      - name: Setup MSBuild
-        uses: microsoft/setup-msbuild@v2
-
-      - name: Ensure BuildDate file
-        shell: pwsh
+      - name: Resolve tag
+        id: tag
         run: |
-          $path = "ReClass.NET/Resources/BuildDate.txt"
-          if (!(Test-Path $path)) {
-            New-Item -Force -ItemType Directory (Split-Path $path) | Out-Null
-            Get-Date -AsUTC -Format "yyyy/MM/dd HH:mm:ss" | Out-File $path
-          }
+          tag=$(git tag --points-at "${{ github.event.workflow_run.head_sha }}" | head -n 1)
+          echo "tag=$tag" >> "$GITHUB_OUTPUT"
 
-      - name: Restore
-        run: msbuild ReClass.NET.sln /t:Restore
-
-      - name: Build x86
-        run: msbuild ReClass.NET.sln /p:Configuration=Release /p:Platform=x86 /restore
-
-      - name: Build x64
-        run: msbuild ReClass.NET.sln /p:Configuration=Release /p:Platform=x64 /restore
-
-      - name: Package
-        shell: pwsh
+      - name: Ensure tag is present
+        if: steps.tag.outputs.tag == ''
         run: |
-          $ErrorActionPreference = "Stop"
-          $root = "$PWD"
-          $out = Join-Path $root "build/Release"
-          $x86 = Join-Path $out "x86"
-          $x64 = Join-Path $out "x64"
+          echo "No tag found for ${{ github.event.workflow_run.head_sha }}. Skipping release."
+          exit 0
 
-          New-Item -Force -ItemType Directory $x86, $x64 | Out-Null
-
-          Copy-Item -Recurse -Force "$root/bin/Release/x86/*" $x86
-          Copy-Item -Recurse -Force "$root/bin/Release/x64/*" $x64
-
-          New-Item -Force -ItemType Directory (Join-Path $x86 "Plugins"), (Join-Path $x64 "Plugins") | Out-Null
-
-          Copy-Item -Recurse -Force "$root/Dependencies/x86/*" $x86
-          Copy-Item -Recurse -Force "$root/Dependencies/x64/*" $x64
-
-          $launcher = Join-Path $out "Launcher"
-          New-Item -Force -ItemType Directory $launcher | Out-Null
-          Copy-Item -Recurse -Force "$root/bin/Release/*" $launcher
-
-          $zipPath = Join-Path $root "ReClass.NET-${{ github.ref_name }}.zip"
-          if (Test-Path $zipPath) { Remove-Item $zipPath -Force }
-          Compress-Archive -Path $out\* -DestinationPath $zipPath
+      - name: Download release artifact
+        if: steps.tag.outputs.tag != ''
+        uses: dawidd6/action-download-artifact@v3
+        with:
+          name: reclass-release
+          run_id: ${{ github.event.workflow_run.id }}
+          path: .
 
       - name: Release
+        if: steps.tag.outputs.tag != ''
         uses: softprops/action-gh-release@v2
         with:
+          tag_name: ${{ steps.tag.outputs.tag }}
           files: |
-            ReClass.NET-${{ github.ref_name }}.zip
+            ReClass.NET-${{ steps.tag.outputs.tag }}.zip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
