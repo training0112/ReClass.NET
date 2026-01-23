@@ -53,8 +53,8 @@ jobs:
 
           New-Item -Force -ItemType Directory $x86, $x64 | Out-Null
 
-          Copy-Item -Recurse -Force "$root/ReClass.NET/bin/Release/x86/*" $x86
-          Copy-Item -Recurse -Force "$root/ReClass.NET/bin/Release/x64/*" $x64
+          Copy-Item -Recurse -Force "$root/bin/Release/x86/*" $x86
+          Copy-Item -Recurse -Force "$root/bin/Release/x64/*" $x64
 
           New-Item -Force -ItemType Directory (Join-Path $x86 "Plugins"), (Join-Path $x64 "Plugins") | Out-Null
 
@@ -63,7 +63,7 @@ jobs:
 
           $launcher = Join-Path $out "Launcher"
           New-Item -Force -ItemType Directory $launcher | Out-Null
-          Copy-Item -Recurse -Force "$root/ReClass.NET_Launcher/bin/Release/*" $launcher
+          Copy-Item -Recurse -Force "$root/bin/Release/*" $launcher
 
           $zipPath = Join-Path $root "ReClass.NET-${{ github.ref_name }}.zip"
           if (Test-Path $zipPath) { Remove-Item $zipPath -Force }
