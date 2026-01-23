@@ -80,6 +80,8 @@ namespace ReClassNET.Util
 				// ignored
 			}
 
+			settings.ApplyDarkTheme();
+
 			return settings;
 		}
 

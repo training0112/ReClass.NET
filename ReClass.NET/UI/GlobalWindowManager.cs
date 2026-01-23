@@ -35,6 +35,8 @@ namespace ReClassNET.UI
 			windows.Add(form);
 
 			form.TopMost = Program.Settings.StayOnTop;
+			Theme.ApplyDarkTheme(form);
+			Theme.ApplyDarkThemeToContextMenus(form);
 
 			WindowAdded?.Invoke(null, new GlobalWindowManagerEventArgs(form));
 		}
