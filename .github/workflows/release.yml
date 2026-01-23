@@ -1,0 +1,69 @@
+name: build-and-release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "9.0.x"
+
+      - name: Setup MSBuild
+        uses: microsoft/setup-msbuild@v2
+
+      - name: Restore
+        run: msbuild ReClass.NET.sln /t:Restore
+
+      - name: Build x86
+        run: msbuild ReClass.NET.sln /p:Configuration=Release /p:Platform=x86 /restore
+
+      - name: Build x64
+        run: msbuild ReClass.NET.sln /p:Configuration=Release /p:Platform=x64 /restore
+
+      - name: Package
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = "Stop"
+          $root = "$PWD"
+          $out = Join-Path $root "build/Release"
+          $x86 = Join-Path $out "x86"
+          $x64 = Join-Path $out "x64"
+
+          New-Item -Force -ItemType Directory $x86, $x64 | Out-Null
+
+          Copy-Item -Recurse -Force "$root/ReClass.NET/bin/Release/x86/*" $x86
+          Copy-Item -Recurse -Force "$root/ReClass.NET/bin/Release/x64/*" $x64
+
+          New-Item -Force -ItemType Directory (Join-Path $x86 "Plugins"), (Join-Path $x64 "Plugins") | Out-Null
+
+          Copy-Item -Recurse -Force "$root/Dependencies/x86/*" $x86
+          Copy-Item -Recurse -Force "$root/Dependencies/x64/*" $x64
+
+          $launcher = Join-Path $out "Launcher"
+          New-Item -Force -ItemType Directory $launcher | Out-Null
+          Copy-Item -Recurse -Force "$root/ReClass.NET_Launcher/bin/Release/*" $launcher
+
+          $zipPath = Join-Path $root "ReClass.NET-${{ github.ref_name }}.zip"
+          if (Test-Path $zipPath) { Remove-Item $zipPath -Force }
+          Compress-Archive -Path $out\* -DestinationPath $zipPath
+
+      - name: Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            ReClass.NET-${{ github.ref_name }}.zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
