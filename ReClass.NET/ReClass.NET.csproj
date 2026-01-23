@@ -119,7 +119,8 @@
   </ItemGroup>
 
   <Target Name="BeforeBuild">
+    <MakeDir Directories="$(ProjectDir)Resources" />
     <Exec Condition=" '$(OS)' == 'Windows_NT' " Command="powershell -Command &quot;((Get-Date).ToUniversalTime()).ToString(\&quot;yyyy/MM/dd HH:mm:ss\&quot;) | Out-File '$(ProjectDir)Resources\BuildDate.txt'&quot;" />
-    <Exec Condition=" '$(OS)' == 'Unix' " Command="date +&quot;%Y/%m/%d %H:%M:%S&quot; &gt; $(ProjectDir)/Resources/BuildDate.txt" />
+    <Exec Condition=" '$(OS)' != 'Windows_NT' " Command="date +&quot;%Y/%m/%d %H:%M:%S&quot; &gt; $(ProjectDir)/Resources/BuildDate.txt" />
   </Target>
 </Project>

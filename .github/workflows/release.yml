@@ -24,6 +24,15 @@ jobs:
       - name: Setup MSBuild
         uses: microsoft/setup-msbuild@v2
 
+      - name: Ensure BuildDate file
+        shell: pwsh
+        run: |
+          $path = "ReClass.NET/Resources/BuildDate.txt"
+          if (!(Test-Path $path)) {
+            New-Item -Force -ItemType Directory (Split-Path $path) | Out-Null
+            Get-Date -AsUTC -Format "yyyy/MM/dd HH:mm:ss" | Out-File $path
+          }
+
       - name: Restore
         run: msbuild ReClass.NET.sln /t:Restore
 
