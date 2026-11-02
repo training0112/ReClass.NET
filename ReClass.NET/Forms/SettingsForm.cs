@@ -43,9 +43,6 @@ namespace ReClassNET.Forms
 
 			NativeMethodsWindows.SetButtonShield(createAssociationButton, true);
 			NativeMethodsWindows.SetButtonShield(removeAssociationButton, true);
-
-			colorsSettingTabPage.Enabled = false;
-			colorsSettingTabPage.ToolTipText = "Dark mode is enforced and cannot be changed.";
 		}
 
 		protected override void OnLoad(EventArgs e)

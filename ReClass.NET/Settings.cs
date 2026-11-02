@@ -46,53 +46,35 @@ namespace ReClassNET
 
 		// Colors
 
-		public Color BackgroundColor { get; set; } = Color.FromArgb(30, 30, 30);
+		public Color BackgroundColor { get; set; } = Color.FromArgb(255, 255, 255);
 
-		public Color SelectedColor { get; set; } = Color.FromArgb(45, 45, 48);
+		public Color SelectedColor { get; set; } = Color.FromArgb(240, 240, 240);
 
-		public Color HiddenColor { get; set; } = Color.FromArgb(60, 60, 60);
+		public Color HiddenColor { get; set; } = Color.FromArgb(240, 240, 240);
 
-		public Color OffsetColor { get; set; } = Color.FromArgb(255, 99, 99);
+		public Color OffsetColor { get; set; } = Color.FromArgb(255, 0, 0);
 
-		public Color AddressColor { get; set; } = Color.FromArgb(78, 201, 176);
+		public Color AddressColor { get; set; } = Color.FromArgb(0, 200, 0);
 
-		public Color HexColor { get; set; } = Color.FromArgb(220, 220, 220);
+		public Color HexColor { get; set; } = Color.FromArgb(0, 0, 0);
 
-		public Color TypeColor { get; set; } = Color.FromArgb(86, 156, 214);
+		public Color TypeColor { get; set; } = Color.FromArgb(0, 0, 255);
 
-		public Color NameColor { get; set; } = Color.FromArgb(214, 157, 133);
+		public Color NameColor { get; set; } = Color.FromArgb(32, 32, 128);
 
-		public Color ValueColor { get; set; } = Color.FromArgb(181, 206, 168);
+		public Color ValueColor { get; set; } = Color.FromArgb(255, 128, 0);
 
-		public Color IndexColor { get; set; } = Color.FromArgb(220, 220, 170);
+		public Color IndexColor { get; set; } = Color.FromArgb(32, 200, 200);
 
-		public Color CommentColor { get; set; } = Color.FromArgb(87, 166, 74);
+		public Color CommentColor { get; set; } = Color.FromArgb(0, 200, 0);
 
-		public Color TextColor { get; set; } = Color.FromArgb(206, 145, 120);
+		public Color TextColor { get; set; } = Color.FromArgb(0, 0, 255);
 
-		public Color VTableColor { get; set; } = Color.FromArgb(78, 201, 176);
+		public Color VTableColor { get; set; } = Color.FromArgb(0, 255, 0);
 
-		public Color PluginColor { get; set; } = Color.FromArgb(197, 134, 192);
+		public Color PluginColor { get; set; } = Color.FromArgb(255, 0, 255);
 
 		public CustomDataMap CustomData { get; } = new CustomDataMap();
-
-		public void ApplyDarkTheme()
-		{
-			BackgroundColor = Color.FromArgb(30, 30, 30);
-			SelectedColor = Color.FromArgb(45, 45, 48);
-			HiddenColor = Color.FromArgb(60, 60, 60);
-			OffsetColor = Color.FromArgb(255, 99, 99);
-			AddressColor = Color.FromArgb(78, 201, 176);
-			HexColor = Color.FromArgb(220, 220, 220);
-			TypeColor = Color.FromArgb(86, 156, 214);
-			NameColor = Color.FromArgb(214, 157, 133);
-			ValueColor = Color.FromArgb(181, 206, 168);
-			IndexColor = Color.FromArgb(220, 220, 170);
-			CommentColor = Color.FromArgb(87, 166, 74);
-			TextColor = Color.FromArgb(206, 145, 120);
-			VTableColor = Color.FromArgb(78, 201, 176);
-			PluginColor = Color.FromArgb(197, 134, 192);
-		}
 
 		public Settings Clone() => MemberwiseClone() as Settings;
 	}
