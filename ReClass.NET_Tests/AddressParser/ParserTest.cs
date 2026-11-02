@@ -17,6 +17,9 @@ namespace ReClass.NET_Tests.AddressParser
 		[InlineData(")")]
 		[InlineData("[")]
 		[InlineData("]")]
+		[InlineData("{")]
+		[InlineData("}")]
+		[InlineData("{Name")]
 		[InlineData("1-")]
 		[InlineData("1(")]
 		[InlineData("1)")]
@@ -60,6 +63,8 @@ namespace ReClass.NET_Tests.AddressParser
 		[InlineData("[1,8]", typeof(ReadMemoryExpression))]
 		[InlineData("<test>", typeof(ModuleExpression))]
 		[InlineData("[<test>]", typeof(ReadMemoryExpression))]
+		[InlineData("{Name}", typeof(ClassAddressExpression))]
+		[InlineData("[{Name} + 0x08]", typeof(ReadMemoryExpression))]
 		public void ValidExpressionTests(string expression, Type type)
 		{
 			Check.That(Parser.Parse(expression)).IsInstanceOfType(type);

@@ -138,5 +138,55 @@ namespace ReClass.NET_Tests.AddressParser
 
 			Check.That(executor.Execute(Parser.Parse("[10]"), mock.Object)).IsEqualTo((IntPtr)0x10);
 		}
+
+		private static readonly Dictionary<string, string> classFormulas = new Dictionary<string, string>
+		{
+			["Base"] = "100",
+			["Child"] = "{Base} + 10",
+			["Followed"] = "[{Base} + 8]",
+			["Module"] = "<test.module> + 1",
+			["Invalid"] = "1 +",
+			["CycleA"] = "{CycleB} + 1",
+			["CycleB"] = "{CycleA} + 1",
+			["Self"] = "{Self}",
+			["Twice"] = "{Base} + {Base}"
+		};
+
+		public static IEnumerable<object[]> GetClassAddressExpressionTestData() => new List<object[]>
+		{
+			new object[] { "{Base}", (IntPtr)0x100 },
+			new object[] { "{Base} + 8", (IntPtr)0x108 },
+			new object[] { "{Child}", (IntPtr)0x110 },
+			new object[] { "[{Base} + 8]", (IntPtr)0x500 },
+			new object[] { "{Followed}", (IntPtr)0x500 },
+			new object[] { "{Module}", (IntPtr)0x201 },
+			new object[] { "{Twice}", (IntPtr)0x200 },
+			new object[] { "{NotFound}", (IntPtr)0x0 },
+			new object[] { "{Invalid}", (IntPtr)0x0 },
+			new object[] { "{Self}", (IntPtr)0x0 },
+			new object[] { "{CycleA}", (IntPtr)0x2 }
+		};
+
+		[Theory]
+		[MemberData(nameof(GetClassAddressExpressionTestData))]
+		public void ClassAddressExpressionTest(string expression, IntPtr expected)
+		{
+			ClassAddressResolver.FormulaProvider = name => classFormulas.TryGetValue(name, out var formula) ? formula : null;
+
+			var converter = EndianBitConverter.System;
+
+			var mock = new Mock<IProcessReader>();
+			mock.SetupProperty(p => p.BitConverter)
+				.SetupGet(p => p.BitConverter)
+				.Returns(converter);
+			mock.Setup(p => p.GetModuleByName("test.module"))
+				.Returns(new Module { Start = (IntPtr)0x200 });
+			mock.Setup(p => p.ReadRemoteMemory((IntPtr)0x108, IntPtr.Size))
+				.Returns(IntPtr.Size == 8 ? converter.GetBytes(0x500L) : converter.GetBytes(0x500));
+
+			var executor = CreateExecutor();
+
+			Check.That(executor.Execute(Parser.Parse(expression), mock.Object)).IsEqualTo(expected);
+		}
 	}
 }

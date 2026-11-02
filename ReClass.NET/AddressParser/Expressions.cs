@@ -96,4 +96,14 @@
 			Name = name;
 		}
 	}
+
+	public class ClassAddressExpression : IExpression
+	{
+		public string Name { get; }
+
+		public ClassAddressExpression(string name)
+		{
+			Name = name;
+		}
+	}
 }

@@ -28,6 +28,8 @@ namespace ReClassNET.AddressParser
 
 					return IntPtr.Zero;
 				}
+				case ClassAddressExpression classAddressExpression:
+					return ClassAddressResolver.Resolve(classAddressExpression.Name, processReader);
 				case AddExpression addExpression:
 					return Execute(addExpression.Lhs, processReader).Add(Execute(addExpression.Rhs, processReader));
 				case SubtractExpression subtractExpression:

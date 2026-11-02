@@ -98,6 +98,12 @@ namespace ReClassNET.AddressParser
 							)
 						);
 					}
+				case ClassAddressExpression classAddressExpression:
+					{
+						var resolveFn = typeof(ClassAddressResolver).GetRuntimeMethod(nameof(ClassAddressResolver.Resolve), new[] { typeof(string), typeof(IProcessReader) });
+
+						return Expression.Call(null, resolveFn, Expression.Constant(classAddressExpression.Name), processParameter);
+					}
 				case ReadMemoryExpression readMemoryExpression:
 					{
 						var addressParameter = GenerateMethodBody(readMemoryExpression.Expression, processParameter);

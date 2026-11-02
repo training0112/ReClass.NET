@@ -66,6 +66,8 @@ Just download the [latest version](https://github.com/ReClassNET/ReClass.NET/rel
 - The memory address field of a class can contain a real formula not just a fixed address.  
   
   **\<Program.exe> + 0x123** will use the base address of Program.exe and add 0x123 to it.  
+  **{ClassName}** will use the address of the class with this name in the current project.  
+  **[{ClassName} + 0x08]** will take the address of that class, add 8 and read the value from this address (useful to follow pointers).  
   **[0x4012ABDE]** will read the integer (4 byte on x86 / 8 byte on x64) from the address 0x4012ABDE and use this value as class address.  
   **[\<Program.exe> + 0xDE] - AB** will use the base address of Program.exe, add 0xDE to it, read the value from this address and finally sub 0xAB from it.  
   **[\<Program.exe> + offset + [\<Program.exe> + offset2]]** Nested operations are supported too.  

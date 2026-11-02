@@ -178,6 +178,14 @@ namespace ReClassNET.AddressParser
 
 						return node;
 					}
+				case Token.ClassName:
+					{
+						var node = new ClassAddressExpression(tokenizer.Identifier);
+
+						tokenizer.ReadNextToken();
+
+						return node;
+					}
 				default:
 					throw new ParseException($"Unexpect token: {tokenizer.Token}");
 			}

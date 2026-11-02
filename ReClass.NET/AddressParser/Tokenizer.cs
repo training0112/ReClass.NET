@@ -162,28 +162,31 @@ namespace ReClassNET.AddressParser
 
 		private bool TryReadIdentifierToken()
 		{
-			if (currentCharacter == '<')
+			if (currentCharacter == '<' || currentCharacter == '{')
 			{
+				var isClassName = currentCharacter == '{';
+				var endCharacter = isClassName ? '}' : '>';
+
 				ReadNextCharacter();
 
 				var sb = new StringBuilder();
 
-				while (currentCharacter != '\0' && currentCharacter != '>')
+				while (currentCharacter != '\0' && currentCharacter != endCharacter)
 				{
 					sb.Append(currentCharacter);
 
 					ReadNextCharacter();
 				}
 
-				if (currentCharacter != '>')
+				if (currentCharacter != endCharacter)
 				{
-					throw new ParseException("Invalid identifier, missing '>'.");
+					throw new ParseException($"Invalid identifier, missing '{endCharacter}'.");
 				}
 
 				ReadNextCharacter();
 
 				Identifier = sb.ToString();
-				Token = Token.Identifier;
+				Token = isClassName ? Token.ClassName : Token.Identifier;
 
 				return true;
 			}
