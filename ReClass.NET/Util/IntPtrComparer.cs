@@ -10,7 +10,7 @@ namespace ReClassNET.Util
 
 		public int Compare(IntPtr x, IntPtr y)
 		{
-			return x.CompareTo(y);
+			return IntPtrExtension.CompareTo(x, y); // x.CompareTo(y) would bind to the signed IntPtr.CompareTo.
 		}
 	}
 }
