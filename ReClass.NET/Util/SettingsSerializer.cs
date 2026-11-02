@@ -1,4 +1,5 @@
 using System.Diagnostics.Contracts;
+using System.Drawing;
 using System.IO;
 using System.Xml.Linq;
 
@@ -80,7 +81,34 @@ namespace ReClassNET.Util
 				// ignored
 			}
 
+			ResetColorsSavedByForcedDarkTheme(settings);
+
 			return settings;
+		}
+
+		/// <summary>The forced dark theme build wrote its colors to the settings file. Without this they would still be used.</summary>
+		private static void ResetColorsSavedByForcedDarkTheme(Settings settings)
+		{
+			if (settings.BackgroundColor.ToArgb() != Color.FromArgb(30, 30, 30).ToArgb())
+			{
+				return;
+			}
+
+			var defaults = new Settings();
+			settings.BackgroundColor = defaults.BackgroundColor;
+			settings.SelectedColor = defaults.SelectedColor;
+			settings.HiddenColor = defaults.HiddenColor;
+			settings.OffsetColor = defaults.OffsetColor;
+			settings.AddressColor = defaults.AddressColor;
+			settings.HexColor = defaults.HexColor;
+			settings.TypeColor = defaults.TypeColor;
+			settings.NameColor = defaults.NameColor;
+			settings.ValueColor = defaults.ValueColor;
+			settings.IndexColor = defaults.IndexColor;
+			settings.CommentColor = defaults.CommentColor;
+			settings.TextColor = defaults.TextColor;
+			settings.VTableColor = defaults.VTableColor;
+			settings.PluginColor = defaults.PluginColor;
 		}
 
 		#endregion
