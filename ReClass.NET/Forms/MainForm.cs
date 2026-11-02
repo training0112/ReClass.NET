@@ -1,6 +1,7 @@
 using System;
 using System.ComponentModel;
 using System.Diagnostics.Contracts;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -80,8 +81,17 @@ namespace ReClassNET.Forms
 			InitializeComponent();
 			UpdateWindowTitle();
 
+			ClassAddressResolver.FormulaProvider = name => currentProject?.Classes.FirstOrDefault(c => c.Name == name)?.AddressFormula;
+
 			mainMenuStrip.Renderer = new CustomToolStripProfessionalRenderer(true, true);
 			toolStrip.Renderer = new CustomToolStripProfessionalRenderer(true, false);
+			toolStrip.ImageScalingSize = new Size(DpiUtil.ScaleIntX(20), DpiUtil.ScaleIntY(20));
+			attachToProcessToolStripSplitButton.Image = ToolbarIcons.Search();
+			openProjectToolStripButton.Image = ToolbarIcons.Folder();
+			saveToolStripButton.Image = ToolbarIcons.Save();
+			newClassToolStripButton.Image = ToolbarIcons.NewClass();
+			addBytesToolStripDropDownButton.Image = ToolbarIcons.AddBytes();
+			insertBytesToolStripDropDownButton.Image = ToolbarIcons.InsertBytes();
 			isLittleEndianToolStripMenuItem.Checked = BitConverter.IsLittleEndian;
 
 			Program.RemoteProcess.ProcessAttached += sender =>

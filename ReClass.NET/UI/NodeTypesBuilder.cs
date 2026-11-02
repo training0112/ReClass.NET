@@ -64,7 +64,8 @@ namespace ReClassNET.UI
 					Value = t,
 					ToolTipText = label,
 					DisplayStyle = ToolStripItemDisplayStyle.Image,
-					Image = icon
+					Image = ToolbarIcons.ForNodeType(t) ?? icon,
+					ImageScaling = ToolStripItemImageScaling.None
 				};
 				item.Click += clickHandler;
 				return item;

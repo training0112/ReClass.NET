@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Linq;
+using System.Reflection;
 using System.Windows.Forms;
 
 namespace ReClassNET.UI
@@ -36,6 +37,8 @@ namespace ReClassNET.UI
 
 			form.TopMost = Program.Settings.StayOnTop;
 
+			ApplyDefaultFontToToolStrips(form);
+
 			WindowAdded?.Invoke(null, new GlobalWindowManagerEventArgs(form));
 		}
 
@@ -46,6 +49,26 @@ namespace ReClassNET.UI
 			if (windows.Remove(form))
 			{
 				WindowRemoved?.Invoke(null, new GlobalWindowManagerEventArgs(form));
+			}
+		}
+
+		/// <summary>Tool strips use the system menu font and ignore Application.SetDefaultFont.</summary>
+		private static void ApplyDefaultFontToToolStrips(Control control)
+		{
+			if (control is Form || control is UserControl)
+			{
+				foreach (var field in control.GetType().GetFields(BindingFlags.Instance | BindingFlags.NonPublic))
+				{
+					if (field.GetValue(control) is ToolStrip strip)
+					{
+						strip.Font = Control.DefaultFont;
+					}
+				}
+			}
+
+			foreach (Control child in control.Controls)
+			{
+				ApplyDefaultFontToToolStrips(child);
 			}
 		}
 	}

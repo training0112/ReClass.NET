@@ -91,7 +91,7 @@ namespace ReClassNET.Controls
 			resultDataGridView.AutoGenerateColumns = false;
 			resultDataGridView.DefaultCellStyle.Font = new Font(
 				Program.MonoSpaceFont.Font.FontFamily,
-				DpiUtil.ScaleIntX(11),
+				DpiUtil.ScaleIntX(17),
 				GraphicsUnit.Pixel
 			);
 			resultDataGridView.DataSource = bindings;

@@ -56,15 +56,16 @@ namespace ReClassNET
 
 			MonoSpaceFont = new FontEx
 			{
-				Font = new Font("Courier New", DpiUtil.ScaleIntX(13), GraphicsUnit.Pixel),
-				Width = DpiUtil.ScaleIntX(8),
-				Height = DpiUtil.ScaleIntY(16)
+				Font = new Font("Courier New", DpiUtil.ScaleIntX(17), GraphicsUnit.Pixel),
+				Width = DpiUtil.ScaleIntX(10),
+				Height = DpiUtil.ScaleIntY(20)
 			};
 
 			NativeMethods.EnableDebugPrivileges();
 
 			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);
+			Application.SetDefaultFont(new Font("Segoe UI", 13f));
 
 			CultureInfo.DefaultThreadCurrentCulture = CultureInfo.InvariantCulture;
 
