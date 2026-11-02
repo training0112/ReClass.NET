@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net9.0-windows10.0.20348.0</TargetFramework>
+    <TargetFramework>net10.0-windows10.0.20348.0</TargetFramework>
     <OutputType>WinExe</OutputType>
     <RootNamespace>ReClassNET</RootNamespace>
     <AssemblyName>ReClass.NET</AssemblyName>
@@ -118,7 +118,7 @@
     </Compile>
   </ItemGroup>
 
-  <Target Name="BeforeBuild">
+  <Target Name="GenerateBuildDate" BeforeTargets="BeforeBuild">
     <MakeDir Directories="$(ProjectDir)Resources" />
     <Exec Condition=" '$(OS)' == 'Windows_NT' " Command="powershell -Command &quot;((Get-Date).ToUniversalTime()).ToString(\&quot;yyyy/MM/dd HH:mm:ss\&quot;) | Out-File '$(ProjectDir)Resources\BuildDate.txt'&quot;" />
     <Exec Condition=" '$(OS)' != 'Windows_NT' " Command="date +&quot;%Y/%m/%d %H:%M:%S&quot; &gt; $(ProjectDir)/Resources/BuildDate.txt" />
