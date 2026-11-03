@@ -49,6 +49,7 @@ namespace ReClassNET.Forms
             this.runAsAdminCheckBox = new System.Windows.Forms.CheckBox();
             this.highlightChangedValuesCheckBox = new System.Windows.Forms.CheckBox();
             this.showTextCheckBox = new System.Windows.Forms.CheckBox();
+            this.compactClassRowsCheckBox = new System.Windows.Forms.CheckBox();
             this.showNodeOffsetCheckBox = new System.Windows.Forms.CheckBox();
             this.showNodeAddressCheckBox = new System.Windows.Forms.CheckBox();
             this.stayOnTopCheckBox = new System.Windows.Forms.CheckBox();
@@ -298,6 +299,7 @@ namespace ReClassNET.Forms
             // 
             // displayGroupBox
             // 
+            this.displayGroupBox.Controls.Add(this.compactClassRowsCheckBox);
             this.displayGroupBox.Controls.Add(this.randomizeWindowTitleCheckBox);
             this.displayGroupBox.Controls.Add(this.runAsAdminCheckBox);
             this.displayGroupBox.Controls.Add(this.highlightChangedValuesCheckBox);
@@ -306,13 +308,23 @@ namespace ReClassNET.Forms
             this.displayGroupBox.Controls.Add(this.showNodeAddressCheckBox);
             this.displayGroupBox.Location = new System.Drawing.Point(283, 39);
             this.displayGroupBox.Name = "displayGroupBox";
-            this.displayGroupBox.Size = new System.Drawing.Size(265, 160);
+            this.displayGroupBox.Size = new System.Drawing.Size(265, 183);
             this.displayGroupBox.TabIndex = 2;
             this.displayGroupBox.TabStop = false;
             this.displayGroupBox.Text = "Display";
             // 
+            // compactClassRowsCheckBox
+            //
+            this.compactClassRowsCheckBox.AutoSize = true;
+            this.compactClassRowsCheckBox.Location = new System.Drawing.Point(6, 157);
+            this.compactClassRowsCheckBox.Name = "compactClassRowsCheckBox";
+            this.compactClassRowsCheckBox.Size = new System.Drawing.Size(180, 17);
+            this.compactClassRowsCheckBox.TabIndex = 6;
+            this.compactClassRowsCheckBox.Text = "Compact Pointer and Class Rows";
+            this.compactClassRowsCheckBox.UseVisualStyleBackColor = true;
+            //
             // randomizeWindowTitleCheckBox
-            // 
+            //
             this.randomizeWindowTitleCheckBox.AutoSize = true;
             this.randomizeWindowTitleCheckBox.Location = new System.Drawing.Point(6, 134);
             this.randomizeWindowTitleCheckBox.Name = "randomizeWindowTitleCheckBox";
@@ -1155,6 +1167,7 @@ namespace ReClassNET.Forms
 		private System.Windows.Forms.CheckBox showNodeAddressCheckBox;
 		private System.Windows.Forms.CheckBox showTextCheckBox;
 		private System.Windows.Forms.CheckBox showNodeOffsetCheckBox;
+		private System.Windows.Forms.CheckBox compactClassRowsCheckBox;
 		private System.Windows.Forms.CheckBox highlightChangedValuesCheckBox;
 		private System.Windows.Forms.GroupBox commentsGroupBox;
 		private System.Windows.Forms.CheckBox showRttiCheckBox;

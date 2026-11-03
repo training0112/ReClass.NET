@@ -26,6 +26,9 @@ namespace ReClassNET
 
 		public bool HighlightChangedValues { get; set; } = true;
 
+		/// <summary>Draws a pointer or instance of a class as one row instead of separate Instance and Class rows.</summary>
+		public bool CompactClassRows { get; set; } = true;
+
 		public Encoding RawDataEncoding { get; set; } = Encoding.GetEncoding(1252); /* Windows-1252 */
 
 		// Comment Drawing Settings

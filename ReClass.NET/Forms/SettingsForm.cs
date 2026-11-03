@@ -86,6 +86,7 @@ namespace ReClassNET.Forms
 
 			SetBinding(showNodeAddressCheckBox, nameof(CheckBox.Checked), settings, nameof(Settings.ShowNodeAddress));
 			SetBinding(showNodeOffsetCheckBox, nameof(CheckBox.Checked), settings, nameof(Settings.ShowNodeOffset));
+			SetBinding(compactClassRowsCheckBox, nameof(CheckBox.Checked), settings, nameof(Settings.CompactClassRows));
 			SetBinding(showTextCheckBox, nameof(CheckBox.Checked), settings, nameof(Settings.ShowNodeText));
 			SetBinding(highlightChangedValuesCheckBox, nameof(CheckBox.Checked), settings, nameof(Settings.HighlightChangedValues));
 

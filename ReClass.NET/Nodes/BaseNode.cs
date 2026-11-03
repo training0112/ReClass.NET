@@ -254,7 +254,7 @@ namespace ReClassNET.Nodes
 
 		/// <summary>Toggles the specified level.</summary>
 		/// <param name="level">The level to toggle.</param>
-		internal void ToggleLevelOpen(int level)
+		internal virtual void ToggleLevelOpen(int level)
 		{
 			LevelsOpen[level] = !LevelsOpen[level];
 		}
@@ -262,10 +262,15 @@ namespace ReClassNET.Nodes
 		/// <summary>Sets the specific level.</summary>
 		/// <param name="level">The level to set.</param>
 		/// <param name="open">True to open.</param>
-		internal void SetLevelOpen(int level, bool open)
+		internal virtual void SetLevelOpen(int level, bool open)
 		{
 			LevelsOpen[level] = open;
 		}
+
+		/// <summary>Tests if the specific level is open.</summary>
+		/// <param name="level">The level to test.</param>
+		/// <returns>True if the level is open.</returns>
+		internal virtual bool IsLevelOpen(int level) => LevelsOpen[level];
 
 		/// <summary>Adds a <see cref="HotSpot"/> the user can interact with.</summary>
 		/// <param name="context">The drawing context.</param>
@@ -433,7 +438,7 @@ namespace ReClassNET.Nodes
 				return x + context.IconProvider.Dimensions;
 			}
 
-			var icon = LevelsOpen[context.Level] ? context.IconProvider.OpenCloseOpen : context.IconProvider.OpenCloseClosed;
+			var icon = IsLevelOpen(context.Level) ? context.IconProvider.OpenCloseOpen : context.IconProvider.OpenCloseClosed;
 			return AddIcon(context, x, y, icon, 0, HotSpotType.OpenClose);
 		}
 

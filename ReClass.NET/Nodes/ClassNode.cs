@@ -100,58 +100,80 @@ namespace ReClassNET.Nodes
 
 			if (LevelsOpen[context.Level])
 			{
-				var childOffset = tx - origX;
+				var childrenSize = DrawChildren(context, tx, y);
 
-				var innerContext = context.Clone();
-				innerContext.Level++;
-				foreach (var node in Nodes)
+				size.Width = Math.Max(size.Width, childrenSize.Width + tx - origX);
+				size.Height += childrenSize.Height;
+			}
+
+			return size;
+		}
+
+		/// <summary>Draws the child nodes one level deeper than <paramref name="context"/>, without the row of the class itself.</summary>
+		/// <param name="context">The drawing context of the class.</param>
+		/// <param name="x">The x coordinate of the child rows.</param>
+		/// <param name="y">The y coordinate of the first child row.</param>
+		/// <returns>The pixel size the child rows occupy.</returns>
+		internal Size DrawChildren(DrawContext context, int x, int y)
+		{
+			var size = Size.Empty;
+
+			var innerContext = context.Clone();
+			innerContext.Level++;
+			foreach (var node in Nodes)
+			{
+				Size AggregateNodeSizes(Size baseSize, Size newSize)
 				{
-					Size AggregateNodeSizes(Size baseSize, Size newSize)
-					{
-						return new Size(Math.Max(baseSize.Width, newSize.Width), baseSize.Height + newSize.Height);
-					}
+					return new Size(Math.Max(baseSize.Width, newSize.Width), baseSize.Height + newSize.Height);
+				}
 
-					Size ExtendWidth(Size baseSize, int width)
-					{
-						return new Size(baseSize.Width + width, baseSize.Height);
-					}
+				// Draw the node if it is in the visible area.
+				if (context.ClientArea.Contains(x, y))
+				{
+					var innerSize = node.Draw(innerContext, x, y);
 
-					// Draw the node if it is in the visible area.
-					if (context.ClientArea.Contains(tx, y))
-					{
-						var innerSize = node.Draw(innerContext, tx, y);
+					size = AggregateNodeSizes(size, innerSize);
 
-						size = AggregateNodeSizes(size, ExtendWidth(innerSize, childOffset));
+					y += innerSize.Height;
+				}
+				else
+				{
+					// Otherwise calculate the height...
+					var calculatedHeight = node.CalculateDrawnHeight(innerContext);
+
+					// and check if the node area overlaps with the visible area...
+					if (new Rectangle(x, y, 9999999, calculatedHeight).IntersectsWith(context.ClientArea))
+					{
+						// then draw the node...
+						var innerSize = node.Draw(innerContext, x, y);
+
+						size = AggregateNodeSizes(size, innerSize);
 
 						y += innerSize.Height;
 					}
 					else
 					{
-						// Otherwise calculate the height...
-						var calculatedHeight = node.CalculateDrawnHeight(innerContext);
+						// or skip drawing and just use the calculated height.
+						size = AggregateNodeSizes(size, new Size(0, calculatedHeight));
 
-						// and check if the node area overlaps with the visible area...
-						if (new Rectangle(tx, y, 9999999, calculatedHeight).IntersectsWith(context.ClientArea))
-						{
-							// then draw the node...
-							var innerSize = node.Draw(innerContext, tx, y);
-
-							size = AggregateNodeSizes(size, ExtendWidth(innerSize, childOffset));
-
-							y += innerSize.Height;
-						}
-						else
-						{
-							// or skip drawing and just use the calculated height.
-							size = AggregateNodeSizes(size, new Size(0, calculatedHeight));
-
-							y += calculatedHeight;
-						}
+						y += calculatedHeight;
 					}
 				}
 			}
 
 			return size;
+		}
+
+		/// <summary>Draws the name of the class in angle brackets. The name can be edited in place.</summary>
+		/// <param name="context">The drawing context.</param>
+		/// <param name="x">The x coordinate.</param>
+		/// <param name="y">The y coordinate.</param>
+		/// <returns>The new x coordinate after drawing the text.</returns>
+		internal int AddBracketedName(DrawContext context, int x, int y)
+		{
+			x = AddText(context, x, y, context.Settings.ValueColor, HotSpot.NoneId, "<");
+			x = AddText(context, x, y, context.Settings.ValueColor, HotSpot.NameId, Name);
+			return AddText(context, x, y, context.Settings.ValueColor, HotSpot.NoneId, ">");
 		}
 
 		public override int CalculateDrawnHeight(DrawContext context)
@@ -164,11 +186,19 @@ namespace ReClassNET.Nodes
 			var height = context.Font.Height;
 			if (LevelsOpen[context.Level])
 			{
-				var nv = context.Clone();
-				nv.Level++;
-				height += Nodes.Sum(n => n.CalculateDrawnHeight(nv));
+				height += CalculateChildrenHeight(context);
 			}
 			return height;
+		}
+
+		/// <summary>Calculates the height <see cref="DrawChildren"/> returns.</summary>
+		/// <param name="context">The drawing context of the class.</param>
+		/// <returns>The calculated height.</returns>
+		internal int CalculateChildrenHeight(DrawContext context)
+		{
+			var nv = context.Clone();
+			nv.Level++;
+			return Nodes.Sum(n => n.CalculateDrawnHeight(nv));
 		}
 
 		public override void Update(HotSpot spot)

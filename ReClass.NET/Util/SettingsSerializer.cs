@@ -19,12 +19,15 @@ namespace ReClassNET.Util
 		{
 			EnsureSettingsDirectoryAvailable();
 
+			return Load(Path.Combine(PathUtil.SettingsFolderPath, Constants.SettingsFile));
+		}
+
+		internal static Settings Load(string path)
+		{
 			var settings = new Settings();
 
 			try
 			{
-				var path = Path.Combine(PathUtil.SettingsFolderPath, Constants.SettingsFile);
-
 				using var sr = new StreamReader(path);
 
 				var document = XDocument.Load(sr);
@@ -45,6 +48,7 @@ namespace ReClassNET.Util
 					XElementSerializer.TryRead(display, nameof(settings.ShowNodeOffset), e => settings.ShowNodeOffset = XElementSerializer.ToBool(e));
 					XElementSerializer.TryRead(display, nameof(settings.ShowNodeText), e => settings.ShowNodeText = XElementSerializer.ToBool(e));
 					XElementSerializer.TryRead(display, nameof(settings.HighlightChangedValues), e => settings.HighlightChangedValues = XElementSerializer.ToBool(e));
+					XElementSerializer.TryRead(display, nameof(settings.CompactClassRows), e => settings.CompactClassRows = XElementSerializer.ToBool(e));
 					XElementSerializer.TryRead(display, nameof(settings.ShowCommentFloat), e => settings.ShowCommentFloat = XElementSerializer.ToBool(e));
 					XElementSerializer.TryRead(display, nameof(settings.ShowCommentInteger), e => settings.ShowCommentInteger = XElementSerializer.ToBool(e));
 					XElementSerializer.TryRead(display, nameof(settings.ShowCommentPointer), e => settings.ShowCommentPointer = XElementSerializer.ToBool(e));
@@ -121,8 +125,11 @@ namespace ReClassNET.Util
 
 			EnsureSettingsDirectoryAvailable();
 
-			var path = Path.Combine(PathUtil.SettingsFolderPath, Constants.SettingsFile);
+			Save(settings, Path.Combine(PathUtil.SettingsFolderPath, Constants.SettingsFile));
+		}
 
+		internal static void Save(Settings settings, string path)
+		{
 			using var sw = new StreamWriter(path);
 
 			var document = new XDocument(
@@ -143,6 +150,7 @@ namespace ReClassNET.Util
 						XElementSerializer.ToXml(nameof(settings.ShowNodeOffset), settings.ShowNodeOffset),
 						XElementSerializer.ToXml(nameof(settings.ShowNodeText), settings.ShowNodeText),
 						XElementSerializer.ToXml(nameof(settings.HighlightChangedValues), settings.HighlightChangedValues),
+						XElementSerializer.ToXml(nameof(settings.CompactClassRows), settings.CompactClassRows),
 						XElementSerializer.ToXml(nameof(settings.ShowCommentFloat), settings.ShowCommentFloat),
 						XElementSerializer.ToXml(nameof(settings.ShowCommentInteger), settings.ShowCommentInteger),
 						XElementSerializer.ToXml(nameof(settings.ShowCommentPointer), settings.ShowCommentPointer),
