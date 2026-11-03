@@ -56,9 +56,9 @@ namespace ReClassNET
 
 			MonoSpaceFont = new FontEx
 			{
-				Font = new Font("Courier New", DpiUtil.ScaleIntX(17), GraphicsUnit.Pixel),
+				Font = new Font("Courier New", DpiUtil.ScaleIntX(16), GraphicsUnit.Pixel),
 				Width = DpiUtil.ScaleIntX(10),
-				Height = DpiUtil.ScaleIntY(20)
+				Height = DpiUtil.ScaleIntY(19)
 			};
 
 			NativeMethods.EnableDebugPrivileges();
